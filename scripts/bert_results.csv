@@ -1,0 +1,3 @@
+model,best_checkpoint,eval_accuracy,eval_f1,eval_loss,train_loss
+cointegrated/rubert-tiny2,../models\checkpoint-5613,0.8888,0.8882,0.3616,
+Aniemore/rubert-large-emotion-russian-cedr-m7,../models\checkpoint-3742,0.9345,0.9347,0.3049,
