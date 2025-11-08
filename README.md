@@ -32,7 +32,6 @@ python venv -m venv
 venv/Scripts/Activate
 pip install -r requirements.txt
 cd scripts
-
 ```
 
 3. Если нужно, обучите модели:
@@ -40,7 +39,6 @@ cd scripts
 python classifier.py // для TF-IDF + logreg
 python classifier.py // для GridSearch
 python bert.py // для ruBert
-
 ```
 
 4. Запустите систему:
@@ -48,7 +46,6 @@ python bert.py // для ruBert
 docker-compose up --build
 python backend.py
 streamlit run frontend.py
-
 ```
 
 Готово!
