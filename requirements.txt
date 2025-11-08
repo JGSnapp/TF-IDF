@@ -3,3 +3,13 @@ pandas
 matplotlib
 seaborn
 scikit-learn
+uvicorn
+sqlalchemy
+transformers>=4.30
+accelerate>=0.26
+fastapi
+streamlit
+python-dotenv
+psycopg[binary]
+datasets
+torch
