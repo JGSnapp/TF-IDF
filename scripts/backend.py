@@ -6,12 +6,11 @@ from sqlalchemy import create_engine, text
 import os
 from dotenv import load_dotenv
 load_dotenv()
+import pickle
 
 STANDART_PATH = os.getenv("STANDART_PATH", "../models/checkpoint-5613")
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+psycopg://app:secret@localhost:5432/mydb")
 engine = create_engine(DATABASE_URL, pool_pre_ping=True)
-
-pipe = pipeline("text-classification", model=STANDART_PATH, tokenizer=STANDART_PATH)
 
 def insert_request(engine, comment: str, comment_type: int, model: str):
     sql = text("""
@@ -59,10 +58,12 @@ def get_list():
 def predict(payload: RequestBody = Body(...)):
     model_path = payload.model
     text_input = payload.text
-    global pipe
-    if model_path != STANDART_PATH:
+    if model_path[-3:] == "pkl":
+        gs = pickle.load(open(model_path, 'rb'))
+        result = int(gs.predict([text_input]))
+    else:
         pipe = pipeline("text-classification", model=model_path, tokenizer=model_path)
-    result = int(pipe(text_input)[0]['label'])
+        result = int(pipe(text_input)[0]['label'])
     variants = ["Мусор", "Негативный отзыв", "Нейтральный отзыв", "Позитивный отзыв"]
     insert_request(engine, comment = text_input, comment_type = result, model = model_path)
     return {"message": f"Результат: {variants[result]}"}
