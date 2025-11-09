@@ -4,7 +4,7 @@ services:
     restart: unless-stopped
     env_file: ./.env
     ports:
-      - "${PGPORT:-5432}:5432"
+      - "${PGPORT:-6000}:6000"
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./initdb:/docker-entrypoint-initdb.d:ro

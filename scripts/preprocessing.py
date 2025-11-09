@@ -1,37 +1,42 @@
-import pandas as pd
+from string import punctuation
+
 import matplotlib.pyplot as plt
+import pandas as pd
 import seaborn as sns
 from sklearn.model_selection import train_test_split
-from string import punctuation
 
 data = pd.read_excel("../data/raw/data_raw.xlsx")
 
-new_data = data.drop(["Вид", "ID", "Кампания"], axis = 1)
+new_data = data.drop(["Вид", "ID", "Кампания"], axis=1)
 new_data = new_data.dropna()
-new_data = new_data.rename(columns={
-    "Комментарии": "text",
-    "Эмоциональная окраска": "type",
-})
-data = new_data['type'] = new_data['type'].map({
-    'Мусор': 0,
-    'Негативная': 1,
-    'Нейтральная': 2,
-    'Позитивная': 3,
-    })
+new_data = new_data.rename(
+    columns={
+        "Комментарии": "text",
+        "Эмоциональная окраска": "type",
+    }
+)
+data = new_data["type"] = new_data["type"].map(
+    {
+        "Мусор": 0,
+        "Негативная": 1,
+        "Нейтральная": 2,
+        "Позитивная": 3,
+    }
+)
 
 tbl = str.maketrans("", "", punctuation)
 
-s = new_data['text'].str.lower()
+s = new_data["text"].str.lower()
 s = s.str.translate(tbl)
-s = s.str.replace(r'\s+', ' ', regex=True)
+s = s.str.replace(r"\s+", " ", regex=True)
 s = s.str.strip()
 
-new_data['label'] = s
+new_data["label"] = s
 
 data_count = new_data.groupby("type")["label"].count()
 df_count = data_count.to_frame()
 
-sns.barplot(x=df_count.index, y = df_count['label'], palette = 'summer')
+sns.barplot(x=df_count.index, y=df_count["label"], palette="summer")
 
 plt.title("Кол-во комментариев разных классов")
 plt.xlabel("Окрас")

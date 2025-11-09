@@ -13,3 +13,5 @@ python-dotenv
 psycopg[binary]
 datasets
 torch
+navec
+fasttext
